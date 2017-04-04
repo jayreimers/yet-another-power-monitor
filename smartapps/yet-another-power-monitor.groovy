@@ -39,8 +39,8 @@
 
 definition(
         name: "Yet Another Power Monitor",
-        namespace: "elasticdev",
-        author: "James P",
+        namespace: "reimersjc",
+        author: "James P & Jason R",
         description: "Using power monitoring switch, monitor for a change in power consumption, and alert when the power draw stops.",
         category: "Convenience",
         iconUrl: "https://s3.amazonaws.com/smartapp-icons/Convenience/Cat-Convenience.png",
@@ -50,7 +50,7 @@ definition(
 preferences {
     section("About") {
         paragraph "Using power monitoring switch, monitor for a change in power consumption, and alert when the power draw stops."
-        paragraph "Version 1.5"
+        paragraph "Version 1.6"
     }
 
     section ("When this device stops drawing power") {

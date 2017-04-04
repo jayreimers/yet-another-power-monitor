@@ -1,2 +1,2 @@
 # yet-another-power-meter
-SmartThings - Yet Another Power Meter
+SmartThings - Yet Another Power Monitor
