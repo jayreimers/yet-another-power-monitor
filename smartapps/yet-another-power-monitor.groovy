@@ -72,7 +72,12 @@ preferences {
         input("recipients", "contact", title: "Send notifications to") {
             input "phone", "phone", title: "Notify with text message (optional)", description: "Phone Number", required: false
         }
-        input "speechOut", "capability.capability.speechSynthesis", title:"Speak message via: ", multiple: true, required: false
+    }
+
+    section ("Sonos") {
+        input "sonos", "capability.musicPlayer", title: "On this Sonos player", required: false, multiple: true
+        input "resumePlaying", "bool", title: "Resume currently playing music after notification", required: false, defaultValue: true
+        input "volume", "number", title: "Temporarily change volume", description: "0-100%", required: false
     }
 
     section ("Additionally", hidden: hideOptionsSection(), hideable: true) {
@@ -122,6 +127,10 @@ def initialize() {
         schedule(ticklerSchedule, tickler)
     }
     subscribe(meter, "power", powerHandler)
+
+    if (sonos) {
+        loadText()
+    }
 }
 
 /**
@@ -181,8 +190,8 @@ def powerHandler(evt) {
         else {
             send(message)
         }
-        if (speechOut) {
-            speakMessage(message)
+        if (sonos) {
+            speakMessage()
         }
     }
 }
@@ -213,7 +222,15 @@ private send(msg) {
  * @param msg
  */
 private speakMessage(msg) {
-    speechOut.speak(msg)
+    if (resumePlaying) {
+        sonos.playTrackAndResume(state.sound.uri, state.sound.duration, volume)
+    } else {
+        sonos.playTrackAndRestore(state.sound.uri, state.sound.duration, volume)
+    }
+}
+
+private loadText() {
+    state.sound = textToSpeech(message instanceof List ? message[0] : message) // not sure why this is (sometimes) needed)
 }
 
 /**
